@@ -1,8 +1,8 @@
 import requests
 import spotifyToken
 
-CLIENT_ID = ''
-CLIENT_SECRET = ''
+CLIENT_ID = None
+CLIENT_SECRET = None
 
 AUTH_TOKEN = None
 AUTH_REFRESH_TOKEN = None

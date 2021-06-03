@@ -4,6 +4,7 @@ import menuManager
 
 import serverCore
 import clientCore
+import spotifyCore
 
 import requests, os, subprocess
 
@@ -15,6 +16,7 @@ def main():
 
     # Load Files
     fileCore.load_spotifyToken()
+    fileCore.load_settings()
 
     # Choose between server and client mode
     print('> Choose application mode')
@@ -30,6 +32,31 @@ def main():
         print('- - - - -')
         print('> Starting in Server Mode...')
         print('> Connecting to Spotify...')
+
+        # Get spotify client id
+        if(spotifyCore.CLIENT_ID == None or spotifyCore.CLIENT_SECRET == None):
+            print(' ')
+            print('> Please enter your Spotify clientID and clientSecret...')
+            print('> This information is stored and can be changed in the \"config/settings.txt\" file')
+
+            while(spotifyCore.CLIENT_ID == None):
+                input_clientID = input('> Enter your Spotify ClientID: ')
+                if(input_clientID != None and input_clientID.replace(' ', '') != ''):
+                    spotifyCore.CLIENT_ID = str(input_clientID.replace(' ', '').replace('\n',''))
+                else: 
+                    print('> Wrong input... please try again')
+
+            while(spotifyCore.CLIENT_SECRET == None):
+                input_clientSecret = input('> Enter your Spotify ClientSecret: ')
+                if(input_clientSecret != None and input_clientSecret.replace(' ', '') != ''):
+                    spotifyCore.CLIENT_SECRET = str(input_clientSecret.replace(' ', '').replace('\n',''))
+                else: 
+                    print('> Wrong input... please try again')
+
+            fileCore.save_settings()
+
+            print('> Successfully updated your Spotify information')
+
 
         # Start server
         serverCore.start_server(1233)
@@ -56,7 +83,7 @@ def main():
 
 # Start Program
 print('---  Song Guesser  ---')
-print('<-- Version {VERSION} -->')
+print('<-- Version ' + VERSION + ' -->')
 print('<--  by spiegelei  -->')
 print(' ')
 
@@ -70,23 +97,26 @@ try:
     # make the request and return the json
     repo_info = requests.get(url).json()
 
-    if(repo_info["tag_name"] == VERSION):
-        print('> Your version is the newest. No updates available!')
+    if(not 'tag_name' in repo_info.keys()):
+        print('> No releases found...')
     else:
-        print('<-- A new version is available -->')
-        print('> The newest version is ' + repo_info['tag_name'])
-        print('> Do you want to update now? (Yes/No)')
-
-        update_awnser = input()
-
-        if(update_awnser.lower() == 'yes' or update_awnser.lower() == 'y'):
-            print('> Starting update...')
-            subprocess.Popen(['python', os.path.dirname(__file__) + '\\updateVersion.py'])
-            quit(0)
-
+        if(repo_info["tag_name"] == VERSION):
+            print('> Your version is the newest. No updates available!')
         else:
-            print('> It is recommended to update as soon as possible...')
-            print('> https://github.com/LordSpiegelei/songGuesser-py/releases/latest')
+            print('<-- A new version is available -->')
+            print('> The newest version is ' + repo_info['tag_name'])
+            print('> Do you want to update now? (Yes/No)')
+
+            update_awnser = input()
+
+            if(update_awnser.lower() == 'yes' or update_awnser.lower() == 'y'):
+                print('> Starting update...')
+                subprocess.Popen(['python', os.path.dirname(__file__) + '\\updateVersion.py'])
+                quit(0)
+
+            else:
+                print('> It is recommended to update as soon as possible...')
+                print('> https://github.com/LordSpiegelei/songGuesser-py/releases/latest')
 
 except Exception as e:
     print('> Version check failed')
