@@ -69,6 +69,12 @@ def main():
         print('- - - - -')
         print('> Starting in Client Mode...')
 
+        # Input ip address
+        server_IP = input('> Please enter the ip-address (Example: 192.199.1.123 ): ').replace(' ', '')
+
+        # Input port
+        server_Port = int(input('> Please enter the port (Default: 1233 ): ').replace(' ', ''))
+
         # Choose username
         clientCore.client_username = input('> Please enter username: ').replace(' ', '_')[0:12]
 
@@ -76,7 +82,8 @@ def main():
             # Generate random username
             clientCore.client_username = 'Client_' + str(random.randint(1, 99999))
         
-        clientCore.start_client()
+
+        clientCore.start_client(server_IP, server_Port)
 
         menuManager.show_clientMainMenu(None)
 

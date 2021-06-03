@@ -24,17 +24,17 @@ game_stats_rounds = 0
 
 CLIENT_SOCKET = None
 
-def start_client():
-    start_new_thread(client_thread, ())
+def start_client(server_ip, server_port):
+    start_new_thread(client_thread, (server_ip, server_port, ))
 
-def client_thread():
+def client_thread(server_ip, server_port):
     global CLIENT_SOCKET
 
     global client_username
 
     CLIENT_SOCKET = socket.socket()
-    host = '8.tcp.ngrok.io' #'127.0.0.1'
-    port = 17564 #1233
+    host = server_ip #'127.0.0.1'
+    port = server_port #1233
 
     try:
         CLIENT_SOCKET.connect((host, port))
