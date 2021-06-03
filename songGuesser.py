@@ -10,7 +10,7 @@ import requests, os, subprocess
 
 import random
 
-VERSION = 'v0.0.1'
+VERSION = 'v0.0.2'
 
 def main():
 
