@@ -16,6 +16,7 @@ def get_userInfo(getNewData):
     global temp_userInfo
     global BASE_URL
     global AUTH_TOKEN
+    global AUTH_REFRESH_TOKEN
 
     # Check if temp_userInfo is set
     if((temp_userInfo == None) or (getNewData == True)):
@@ -62,6 +63,7 @@ def get_userInfo(getNewData):
 
 def player_currentSong():
     global AUTH_TOKEN
+    global AUTH_REFRESH_TOKEN
     # Update temp_userInfo
 
     # Set request headers
@@ -96,6 +98,7 @@ def player_currentSong():
 
 def player_pausePlayback():
     global AUTH_TOKEN
+    global AUTH_REFRESH_TOKEN
     # Update temp_userInfo
 
     # Set request headers
@@ -130,6 +133,7 @@ def player_pausePlayback():
 
 def player_resumePlayback():
     global AUTH_TOKEN
+    global AUTH_REFRESH_TOKEN
     # Update temp_userInfo
 
     # Set request headers
@@ -164,6 +168,7 @@ def player_resumePlayback():
 
 def player_skipPlayback():
     global AUTH_TOKEN
+    global AUTH_REFRESH_TOKEN
     # Update temp_userInfo
 
     # Set request headers
@@ -198,6 +203,7 @@ def player_skipPlayback():
 
 def player_seekPosition(position_ms):
     global AUTH_TOKEN
+    global AUTH_REFRESH_TOKEN
     # Update temp_userInfo
 
     # Set request headers

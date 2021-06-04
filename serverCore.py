@@ -118,6 +118,7 @@ def threaded_client(connection):
 
 def handle_clientMsg(connection, client_message):
     global server_connections
+    
     if(client_message.startswith('[client_username]')):
         username = client_message.replace('[client_username]', '')
 

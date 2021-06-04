@@ -11,6 +11,9 @@ SCOPES = 'user-read-private%20user-read-email%20user-read-currently-playing%20us
 REDIRECT_URI = 'http://localhost:187'
 
 def token_request():
+    global AUTH_URL
+    global REDIRECT_URI
+    global SCOPES
     print('> Opening authorize website...')
 
     # Open new window with Auth
@@ -47,6 +50,7 @@ def token_request():
 
 def token_refresh():
     global AUTH_URL
+    global REDIRECT_URI
 
     data = spotifyCore.CLIENT_ID + ":" + spotifyCore.CLIENT_SECRET
 
