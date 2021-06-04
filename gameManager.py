@@ -144,10 +144,7 @@ def handle_guess_input(clientConnection, guessInput):
     global game_stats_rounds
 
     # Check if guessInput equals songName
-    # TODO: Check if song artists equals guess input (seperated with ;)
-    # TODO: Add Artist check
-    
-    if(((serverCore.opt_guessTitle == True) and (game_checkTitleGuess(currSongInfo['item']['name'], guessInput) == True))):
+    if(((serverCore.opt_guessTitle == True and serverCore.opt_guessArtist == False) and (game_checkTitleGuess(currSongInfo['item']['name'], guessInput) == True)) or ((serverCore.opt_guessArtist == True and serverCore.opt_guessTitle == False) and (game_checkArtistGuess(currSongInfo['item']['artists'], guessInput) == True)) or ((serverCore.opt_guessArtist == True and serverCore.opt_guessTitle == True) and ((game_checkArtistGuess(currSongInfo['item']['artists'], guessInput) == True) and (game_checkTitleGuess(currSongInfo['item']['name'], guessInput) == True)))):
         # GuessInput match
         
         # Increase users wins
@@ -489,6 +486,69 @@ def game_checkTitleGuess(songTitle, userGuess):
                             break
                         i += 1
                 i += 1
+
+    return correctGuess
+
+def game_checkArtistGuess(songArtistsRaw, userGuess):
+    correctGuess = True
+
+    songArtists = []
+    userArtists = []
+
+    # Ignore Features
+    if(serverCore.opt_ignoreFeatures == True):
+        for currArtistWord in songArtistsRaw[0]['name'].split(' '):
+            # Ignore special character
+            if(serverCore.opt_ignoreSpecial == True):
+                # Ignore case
+                if(serverCore.opt_ignoreCase == True):
+                    songArtists += [re.sub(r'[^a-zA-Z0-9]', '', currArtistWord).lower()]
+                else:
+                    songArtists += [re.sub(r'[^a-zA-Z0-9]', '', currArtistWord)]
+            else:
+                # Ignore case
+                if(serverCore.opt_ignoreCase == True):
+                    songArtists += [currArtistWord.lower()]
+                else:
+                    songArtists += [currArtistWord]
+    else:
+        for artistInfo in songArtistsRaw:
+            for currArtistWord in artistInfo['name'].split(' '):
+                # Ignore special character
+                if(serverCore.opt_ignoreSpecial == True):
+                    # Ignore case
+                    if(serverCore.opt_ignoreCase == True):
+                        songArtists += [re.sub(r'[^a-zA-Z0-9]', '', currArtistWord).lower()]
+                    else:
+                        songArtists += [re.sub(r'[^a-zA-Z0-9]', '', currArtistWord)]
+                else:
+                    # Ignore case
+                    if(serverCore.opt_ignoreCase == True):
+                        songArtists += [currArtistWord.lower()]
+                    else:
+                        songArtists += [currArtistWord]
+            
+    # Split user guess
+    for userArtistGuess in userGuess.split(' '):
+        # Ignore special character
+        if(serverCore.opt_ignoreSpecial == True):
+            # Ignore case
+            if(serverCore.opt_ignoreCase == True):
+                userArtists += [re.sub(r'[^a-zA-Z0-9]', '', userArtistGuess).lower()]
+            else:
+                userArtists += [re.sub(r'[^a-zA-Z0-9]', '', userArtistGuess)]
+        else:
+            # Ignore case
+            if(serverCore.opt_ignoreCase == True):
+                userArtists += [userArtistGuess.lower()]
+            else:
+                userArtists += [userArtistGuess]
+
+    # Check for each songArtist if it is in userArtists
+    for currArtist in songArtists:
+        if(not (currArtist in userArtists)):
+            correctGuess = False
+            break
 
     return correctGuess
 

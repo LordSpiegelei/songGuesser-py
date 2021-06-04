@@ -4,6 +4,7 @@ import serverCore
 import clientCore
 import gameManager
 import spotifyCore
+import re
 
 currentMenu = 0
 currMenuMessages = None
@@ -102,7 +103,9 @@ def show_serverSettingsMenu(infoMessages):
     print('> [11] Ignore Special (' + str(serverCore.opt_ignoreSpecial) + ')')
     print('> [12] Ignore Additional (' + str(serverCore.opt_ignoreAdd) + ')')
     print(' ')
-    print('> [13] Go Back')
+    print('> [13] Ignore Features (' + str(serverCore.opt_ignoreAdd) + ')')
+    print(' ')
+    print('> [14] Go Back')
 
     # Add in info message
     if(infoMessages != None and infoMessages != ''):
@@ -297,6 +300,19 @@ def show_serverSettingsMenu(infoMessages):
             # Reopen settingsMenu
             show_serverSettingsMenu(infoMessages)
     elif(actionInput == '13'):
+        # Edit
+        editInput = input('> Edit Ignore Features [On/Off] (On): ')
+        # Check Input
+        if(editInput.lower() == 'off'):
+            serverCore.opt_ignoreFeatures = False
+            # Reopen settingsMenu
+            show_serverSettingsMenu(infoMessages)
+        
+        else:
+            serverCore.opt_ignoreFeatures = True
+            # Reopen settingsMenu
+            show_serverSettingsMenu(infoMessages)
+    elif(actionInput == '14'):
         # Go Back
         # Show main menu
         show_serverMainMenu(infoMessages)
@@ -410,7 +426,9 @@ def update_serverMenu(infoMessages):
         print('> [11] Ignore Special (' + str(serverCore.opt_ignoreSpecial) + ')')
         print('> [12] Ignore Additional (' + str(serverCore.opt_ignoreAdd) + ')')
         print(' ')
-        print('> [13] Go Back')
+        print('> [13] Ignore Features (' + str(serverCore.opt_ignoreAdd) + ')')
+        print(' ')
+        print('> [15] Go Back')
 
         # Add in info message
         if(infoMessages != None and infoMessages != ''):
@@ -842,7 +860,7 @@ def handle_clientInput(inputMessage):
         elif(clientCore.game_guessing_self):
             # User is guessing
             # Send guess input to server
-            clientCore.send_message('[client_guess_input]' + inputMessage)
+            clientCore.send_message('[client_guess_input]' + re.sub(r'[^\x00-\x7f]',r'?', inputMessage))
 
             # Reopen menu
             show_clientGuessingMenu(currMenuMessages)

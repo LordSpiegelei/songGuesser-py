@@ -15,6 +15,8 @@ opt_winScore = 10
 opt_guessArtist = False
 opt_guessTitle = True
 
+opt_ignoreFeatures = True
+
 opt_ignoreCase = True
 opt_ignoreOrder = True
 opt_ignoreSpecial = True
