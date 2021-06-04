@@ -484,15 +484,11 @@ def game_checkTitleGuess(songTitle, userGuess):
             for currWord in userWords:
                 if(currWord == songWords[0]):
                     for currSongWord in songWords:
-                        if((len(userWords) == (i+1)) or not (userWords[i] == currSongWord)):
+                        if((len(userWords) < (i+1)) or not (userWords[i] == currSongWord)):
                             correctGuess = False
                             break
                         i += 1
                 i += 1
-
-                if(len(userWords) == (i+1)):
-                    correctGuess = False
-                    break
 
     return correctGuess
 
