@@ -69,11 +69,21 @@ def main():
         print('- - - - -')
         print('> Starting in Client Mode...')
 
-        # Input ip address
+        # Input ip adress
         server_IP = input('> Please enter the ip-address (Example: 192.199.1.123 ): ').replace(' ', '')
 
+        # Default ip address
+        if(server_IP == None or server_IP == ''):
+            server_IP = '127.0.0.1'
+
         # Input port
-        server_Port = int(input('> Please enter the port (Default: 1233 ): ').replace(' ', ''))
+        server_Port = input('> Please enter the port (Default: 1233 ): ').replace(' ', '')
+
+        # Default server port
+        if(server_Port == None or server_Port == ''):
+            server_Port = 1233
+        else:
+            server_Port = int(server_Port)
 
         # Choose username
         clientCore.client_username = input('> Please enter username: ').replace(' ', '_')[0:12]
